@@ -1,214 +1,248 @@
 # MoodFlow - AI-Powered Music Mood Playlist Generator
 
-An intelligent music mood detection and playlist generation system that uses a GTZAN-based CRNN model to classify audio genres and create personalized mood transition playlists.
+An intelligent music mood detection and playlist generation system that uses a GTZAN-trained CRNN model to classify audio genres and create personalized mood transition playlists.
 
-## Architecture Overview
+## 🎯 Features
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                                ICS FLAT NETWORK                                │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐        │
-│  │   MacBook Pro   │      │   iPad Pro      │      │   iPhone 14     │        │
-│  │   M1 Chip       │      │   M4 Chip       │      │   A16 Bionic    │        │
-│  │   16GB RAM      │      │   16GB RAM      │      │   256GB Storage │        │
-│  │   Development   │      │   Design &      │      │   Testing &     │        │
-│  │   Environment   │      │   Testing       │      │   Mobile UI     │        │
-│  └─────────────────┘      └─────────────────┘      └─────────────────┘        │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           FRONTEND (VITE + REACT)                              │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐        │
-│  │   MoodSelector  │      │  AudioUploader  │      │ PlaylistCard    │        │
-│  │   Component     │      │   Component     │      │   Component     │        │
-│  └─────────────────┘      └─────────────────┘      └─────────────────┘        │
-│                                        │                                       │
-│                                        ▼                                       │
-│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐        │
-│  │   MoodEngine    │      │ AudioClassifier │      │  MetricsPanel   │        │
-│  │   (Algorithm)   │      │   (TensorFlow)  │      │   Component     │        │
-│  └─────────────────┘      └─────────────────┘      └─────────────────┘        │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                         ML MODEL LAYER (BROWSER)                               │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐        │
-│  │  TensorFlow.js  │      │ Audio Context   │      │ Mel Spectrogram │        │
-│  │  Runtime        │◀────▶│ Web Audio API   │◀────▶│  Processing     │        │
-│  │                 │      │                 │      │                 │        │
-│  └─────────────────┘      └─────────────────┘      └─────────────────┘        │
-│                                        │                                       │
-│                                        ▼                                       │
-│  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                    CRNN GTZAN GENRE MODEL                              │   │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │   │
-│  │  │ Convolutional   │  │   Bidirectional │  │  Attention &    │        │   │
-│  │  │ Layers (CNN)    │─▶│   LSTM (RNN)    │─▶│  Dense Output   │        │   │
-│  │  │ (Feature Ext.)  │  │ (Temporal Seq.) │  │  (Genre Class.) │        │   │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘        │   │
-│  └─────────────────────────────────────────────────────────────────────────┐   │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                                        ▼
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                         DATA LAYER (STATIC)                                    │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                 │
-│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐        │
-│  │  GTZAN Dataset  │      │   Song Database │      │ Mood Mappings   │        │
-│  │  (10 Genres)    │      │  (Mock Data)    │      │ (Valence/Energy)│        │
-│  │  • Blues        │      │  • Title        │      │ • Sad: 0.15/0.2 │        │
-│  │  • Classical    │      │  • Artist       │      │ • Happy: 0.8/0.6│        │
-│  │  • Country      │      │  • Genre        │      │ • Energetic     │        │
-│  │  • Disco        │      │  • Features     │      │ • Calm          │        │
-│  │  • Hip Hop      │      │                 │      │ • Angry         │        │
-│  │  • Jazz         │      │                 │      │                 │        │
-│  │  • Metal        │      │                 │      │                 │        │
-│  │  • Pop          │      │                 │      │                 │        │
-│  │  • Reggae       │      │                 │      │                 │        │
-│  │  • Rock         │      │                 │      │                 │        │
-│  └─────────────────┘      └─────────────────┘      └─────────────────┘        │
-│                                                                                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
-```
+### 🎵 Audio Genre Classification
+- Upload WAV, MP3, or FLAC audio files
+- Real-time genre prediction using a Keras CRNN model
+- Confidence scores and probability distributions for all 10 genres
+- Interactive audio visualizations (mel spectrogram, waveform, chromagram)
 
-## Key Features
+### 📊 Audio Visualizations
+- **Mel Spectrogram Heatmap** - Frequency analysis over time
+- **Waveform Display** - Amplitude visualization with beat markers
+- **Spectral Features** - Centroid and rolloff analysis
+- **Chromagram** - Pitch class distribution
+- **Tempo/BPM Detection** - Automatic beat detection
 
-### 🎵 **Audio Genre Classification**
-- Upload WAV, MP3, or FLAC files
-- Real-time genre prediction using CRNN model
-- Confidence scores and probability distributions
-- Browser-based processing (no server required)
-
-### 🧠 **Mood-Based Playlist Generation**
+### 🧠 Mood-Based Playlist Generation
 - Select current and target emotional states
 - Smooth transitions between mood states
 - Personalized recommendations based on preferences
-- Advanced metrics and visualization
+- Advanced metrics: Mood Match, Flow Score, Diversity, Smoothness
 
-### 📊 **Intelligent Algorithms**
+### 📈 Intelligent Algorithms
 - K-means clustering for mood similarity
 - Euclidean distance calculations
 - Linear interpolation for mood transitions
 - User preference weighting
 
-## Device Compatibility
+## 🏗️ Architecture
 
-| Device | Specifications | Primary Use |
-|--------|---------------|-------------|
-| **MacBook Pro M1** | 16GB RAM, M1 Chip | Development & Testing |
-| **iPad Pro M4** | 16GB RAM, M4 Chip | Design & UI Testing |
-| **iPhone 14** | A16 Bionic, 256GB | Mobile Testing & UX |
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    FRONTEND (Vite + React)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │ MoodSelector │  │  Classifier  │  │ PlaylistCard │          │
+│  │  Component   │  │     Page     │  │  Component   │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│         │                 │                  │                  │
+│         └────────────────┼──────────────────┘                  │
+│                          ▼                                      │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              AudioVisualization Component               │   │
+│  │  • Mel Spectrogram  • Waveform  • Chromagram           │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                           │ HTTP API
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                 BACKEND (FastAPI + Python)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │   /health    │  │  /classify   │  │   Librosa    │          │
+│  │   Endpoint   │  │   Endpoint   │  │  Processing  │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│                          │                                      │
+│                          ▼                                      │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              CRNN Keras Model (.h5)                     │   │
+│  │  • CNN Feature Extraction → BiLSTM → Attention → Dense │   │
+│  │  • Input: (128, 130, 1) Mel Spectrogram                │   │
+│  │  • Output: 10 GTZAN Genres                              │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-All devices connected via **ICS Flat Network** for seamless development and testing workflow.
-
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-- **Vite** - Fast build tool and dev server
-- **React 18** - Component-based UI library
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Shadcn/UI** - Modern component library
-- **Framer Motion** - Animation library
+| Technology | Purpose |
+|------------|---------|
+| **Vite** | Fast build tool and dev server |
+| **React 18** | Component-based UI |
+| **TypeScript** | Type-safe JavaScript |
+| **Tailwind CSS** | Utility-first styling |
+| **Shadcn/UI** | Modern UI components |
+| **Framer Motion** | Smooth animations |
 
-### Machine Learning
-- **TensorFlow.js** - Browser-based ML runtime
-- **CRNN Model** - Convolutional Recurrent Neural Network
-- **GTZAN Dataset** - 10-genre music classification
-- **Web Audio API** - Audio processing and analysis
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| **FastAPI** | High-performance API server |
+| **Keras 3.x** | Deep learning model runtime |
+| **Librosa** | Audio feature extraction |
+| **NumPy** | Numerical processing |
+| **Uvicorn** | ASGI server |
 
-### Data Processing
-- **Mel Spectrogram** - Audio feature extraction
-- **Librosa** (training) - Audio analysis library
-- **FFT Processing** - Frequency domain analysis
+### Model
+- **Architecture**: CRNN (Convolutional Recurrent Neural Network)
+- **Dataset**: GTZAN (10 music genres)
+- **Input**: Mel spectrogram (128 mel bands × 130 frames)
+- **Output**: 10-class genre classification
 
-## Model Architecture
+## 🚀 Installation & Setup
 
-The CRNN model combines:
-- **Convolutional layers** for spatial feature extraction from spectrograms
-- **Bidirectional LSTM** for temporal sequence modeling
-- **Attention mechanism** for focus on relevant features
-- **Dense output** for 10-class genre classification
+### Prerequisites
+- Node.js 18+
+- Python 3.11+
+- The trained model file: `crnn_gtzan_model_best.h5`
 
-**Model Performance:**
-- Training accuracy: ~95%
-- Validation accuracy: ~89%
-- Real-world performance: ~85-92%
-
-## Installation & Setup
-
+### 1. Clone the Repository
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd mood-playlist-generator
+git clone https://github.com/nidhivk09/AI_mood_music_playlist_generator.git
+cd AI_mood_music_playlist_generator
+```
+
+### 2. Setup Backend
+```bash
+cd backend
+
+# Create virtual environment
+python3.11 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
+pip install -r requirements.txt
+```
+
+### 3. Add the Model File
+Place your trained `crnn_gtzan_model_best.h5` file in the `backend/` directory.
+
+> **Note:** The model file is not included in the repository due to size constraints.
+
+### 4. Setup Frontend
+```bash
+cd ..  # Back to project root
 npm install
+```
 
-# Start development server
+### 5. Start the Application
+
+**Terminal 1 - Backend:**
+```bash
+cd backend
+source venv/bin/activate
+python main.py
+# Server runs on http://localhost:8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
 npm run dev
+# App runs on http://localhost:8080
 ```
 
-## Model Setup
+## 📁 Project Structure
 
-The CRNN genre classifier requires the model to be converted to TensorFlow.js format:
-
-### Step 1: Install Python dependencies
-```bash
-pip install tensorflowjs tensorflow
+```
+AI_mood_music_playlist_generator/
+├── backend/
+│   ├── main.py                   # FastAPI server
+│   ├── requirements.txt          # Python dependencies
+│   └── crnn_gtzan_model_best.h5  # Keras model (not in repo)
+├── src/
+│   ├── components/
+│   │   ├── AudioVisualization.tsx  # Interactive visualizations
+│   │   ├── MoodSelector.tsx        # Mood selection UI
+│   │   ├── MetricsPanel.tsx        # Playlist metrics display
+│   │   └── PlaylistCard.tsx        # Song card component
+│   ├── lib/
+│   │   ├── genreClassifier.ts      # API client for classification
+│   │   ├── moodEngine.ts           # Playlist generation algorithm
+│   │   └── audioProcessor.ts       # Audio utilities
+│   ├── pages/
+│   │   ├── Index.tsx               # Mood playlist generator
+│   │   └── Classifier.tsx          # Audio classification page
+│   └── data/
+│       └── songs.ts                # Sample song database
+└── package.json
 ```
 
-### Step 2: Place your trained model
-Ensure `crnn_gtzan_model_best.h5` is in the `model/` directory.
+## 🎮 Usage
 
-### Step 3: Convert the model
-```bash
-python convert_model.py
+1. **Start both servers** (backend on port 8000, frontend on port 8080)
+
+2. **Classify Audio:**
+   - Navigate to the Classifier page
+   - Upload a WAV, MP3, or FLAC file
+   - View genre predictions with confidence scores
+   - Explore interactive visualizations
+
+3. **Generate Playlists:**
+   - Select your current mood state
+   - Choose your target mood
+   - Adjust preferences (genres, energy level)
+   - Get a smooth transition playlist with metrics
+
+## 🎼 Supported Genres
+
+| Genre | Mood Mapping |
+|-------|--------------|
+| Blues | Melancholic, Reflective |
+| Classical | Calm, Sophisticated |
+| Country | Nostalgic, Storytelling |
+| Disco | Energetic, Fun |
+| Hip Hop | Urban, Rhythmic |
+| Jazz | Relaxed, Sophisticated |
+| Metal | Intense, Aggressive |
+| Pop | Upbeat, Mainstream |
+| Reggae | Laid-back, Positive |
+| Rock | Energetic, Rebellious |
+
+## 📊 API Endpoints
+
+### Health Check
+```
+GET http://localhost:8000/health
 ```
 
-This will create the TensorFlow.js model files in `public/model/crnn_gtzan_genre_model_tfjs/`.
-
-### Model File Structure
+### Classify Audio
 ```
-public/model/crnn_gtzan_genre_model_tfjs/
-├── model.json          # Model architecture and configuration
-├── group1-shard1of2.bin # Model weights (part 1)
-└── group1-shard2of2.bin # Model weights (part 2)
+POST http://localhost:8000/classify
+Content-Type: multipart/form-data
+
+file: <audio_file>
 ```
 
-## Usage
+**Response:**
+```json
+{
+  "predictions": {
+    "blues": 0.05,
+    "classical": 0.02,
+    ...
+  },
+  "top_genre": "hiphop",
+  "confidence": 0.45,
+  "visualization_data": {
+    "mel_spectrogram": [...],
+    "waveform": [...],
+    "tempo": 120.5,
+    "beats": [...]
+  }
+}
+```
 
-1. **Access the App**: Navigate to `http://localhost:5173`
-2. **Classify Audio**: Click "Classify Audio" to upload and analyze music files
-3. **Generate Playlists**: Select mood states and preferences to create playlists
-4. **View Analytics**: Monitor mood transitions and recommendation metrics
-
-## Development Workflow
-
-The development process leverages the ICS flat network for:
-- **MacBook Pro**: Primary development and model training
-- **iPad Pro**: UI/UX design and testing responsive layouts
-- **iPhone**: Mobile-first testing and performance optimization
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Test across all devices (MacBook, iPad, iPhone)
-4. Submit pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.

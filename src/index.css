@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Core palette - Dark elegant theme */
+    --background: 240 10% 6%;
+    --foreground: 210 20% 95%;
+
+    --card: 240 10% 10%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 240 10% 8%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 280 65% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 10% 16%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 240 10% 18%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 200 80% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 10% 18%;
+    --input: 240 10% 18%;
+    --ring: 280 65% 60%;
+
+    --radius: 0.75rem;
+
+    /* Mood colors */
+    --mood-sad: 220 70% 50%;
+    --mood-calm: 200 60% 50%;
+    --mood-happy: 45 90% 55%;
+    --mood-energetic: 25 90% 55%;
+    --mood-angry: 0 75% 55%;
+
+    /* Gradients */
+    --gradient-mood-sad: linear-gradient(135deg, hsl(220 70% 50% / 0.8), hsl(260 60% 45% / 0.6));
+    --gradient-mood-calm: linear-gradient(135deg, hsl(200 60% 50% / 0.8), hsl(180 50% 45% / 0.6));
+    --gradient-mood-happy: linear-gradient(135deg, hsl(45 90% 55% / 0.8), hsl(35 85% 50% / 0.6));
+    --gradient-mood-energetic: linear-gradient(135deg, hsl(25 90% 55% / 0.8), hsl(15 85% 50% / 0.6));
+    --gradient-mood-angry: linear-gradient(135deg, hsl(0 75% 55% / 0.8), hsl(350 70% 45% / 0.6));
+
+    --gradient-primary: linear-gradient(135deg, hsl(280 65% 60%), hsl(200 80% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(240 10% 6%) 0%, hsl(280 30% 12%) 50%, hsl(240 10% 6%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(240 10% 12% / 0.8), hsl(240 10% 8% / 0.9));
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(280 65% 60% / 0.15);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.3);
+    --shadow-elevated: 0 16px 48px hsl(0 0% 0% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 240 10% 8%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 280 65% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 240 10% 16%;
+    --sidebar-ring: 280 65% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer components {
+  .mood-card {
+    @apply relative overflow-hidden rounded-2xl p-6 transition-all duration-300;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  .mood-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .mood-selector {
+    @apply flex flex-col items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-300;
+    @apply hover:scale-105 active:scale-95;
+  }
+
+  .mood-selector.selected {
+    @apply ring-2 ring-primary;
+  }
+
+  .song-card {
+    @apply relative overflow-hidden rounded-xl p-4 transition-all duration-300;
+    background: var(--gradient-card);
+  }
+
+  .song-card:hover {
+    @apply bg-secondary/50;
+  }
+
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .hero-section {
+    background: var(--gradient-hero);
+  }
+
+  .mood-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .mood-badge-sad {
+    background: hsl(var(--mood-sad) / 0.2);
+    color: hsl(var(--mood-sad));
+  }
+
+  .mood-badge-calm {
+    background: hsl(var(--mood-calm) / 0.2);
+    color: hsl(var(--mood-calm));
+  }
+
+  .mood-badge-happy {
+    background: hsl(var(--mood-happy) / 0.2);
+    color: hsl(var(--mood-happy));
+  }
+
+  .mood-badge-energetic {
+    background: hsl(var(--mood-energetic) / 0.2);
+    color: hsl(var(--mood-energetic));
+  }
+
+  .mood-badge-angry {
+    background: hsl(var(--mood-angry) / 0.2);
+    color: hsl(var(--mood-angry));
+  }
+
+  .glass-panel {
+    @apply backdrop-blur-xl rounded-2xl border border-white/10;
+    background: hsl(var(--card) / 0.7);
+  }
+
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden;
+    background: hsl(var(--muted));
+  }
+
+  .progress-bar-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: var(--gradient-primary);
+  }
+}
+
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+}

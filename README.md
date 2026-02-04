@@ -161,6 +161,33 @@ npm install
 npm run dev
 ```
 
+## Model Setup
+
+The CRNN genre classifier requires the model to be converted to TensorFlow.js format:
+
+### Step 1: Install Python dependencies
+```bash
+pip install tensorflowjs tensorflow
+```
+
+### Step 2: Place your trained model
+Ensure `crnn_gtzan_model_best.h5` is in the `model/` directory.
+
+### Step 3: Convert the model
+```bash
+python convert_model.py
+```
+
+This will create the TensorFlow.js model files in `public/model/crnn_gtzan_genre_model_tfjs/`.
+
+### Model File Structure
+```
+public/model/crnn_gtzan_genre_model_tfjs/
+├── model.json          # Model architecture and configuration
+├── group1-shard1of2.bin # Model weights (part 1)
+└── group1-shard2of2.bin # Model weights (part 2)
+```
+
 ## Usage
 
 1. **Access the App**: Navigate to `http://localhost:5173`

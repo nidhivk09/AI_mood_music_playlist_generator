@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { MoodType, moodPoints } from "@/data/songs";
 import { MoodSelector } from "@/components/MoodSelector";
 import { PreferencesPanel } from "@/components/PreferencesPanel";
@@ -22,6 +23,7 @@ import {
   ListMusic,
   RefreshCw,
   Wand2,
+  Brain,
 } from "lucide-react";
 
 const Index = () => {
@@ -88,6 +90,12 @@ const Index = () => {
               Start Over
             </Button>
           )}
+          <Link to="/classifier">
+            <Button variant="outline" size="sm" className="gap-2">
+              <Brain className="w-4 h-4" />
+              Genre Classifier
+            </Button>
+          </Link>
         </div>
       </header>
 

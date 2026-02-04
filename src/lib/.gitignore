@@ -1,0 +1,18 @@
+# Virtual environments
+venv/
+.venv/
+.venv311/
+backend/venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# ML / native binaries
+*.so
+*.dylib
+*.dll
+
+# OS junk
+.DS_Store

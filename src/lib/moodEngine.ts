@@ -277,10 +277,10 @@ function calculateMetrics(
     );
     totalTransitionError += Math.abs(expectedChange - actualChange);
   }
-  const smoothnessScore = Math.max(
-    0,
-    100 - totalTransitionError * 100 * (playlist.length - 1)
-  );
+  // Average the error across transitions, then convert to a 0-100 score
+  // Max possible error per transition is ~1.41 (diagonal of unit square)
+  const avgTransitionError = totalTransitionError / Math.max(1, playlist.length - 1);
+  const smoothnessScore = Math.max(0, Math.min(100, 100 - avgTransitionError * 70));
 
   // Preference match percentage
   const genreMatches = playlist.filter((s) => s.genreMatch).length;

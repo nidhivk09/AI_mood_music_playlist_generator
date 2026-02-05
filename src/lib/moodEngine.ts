@@ -1,8 +1,9 @@
-import { Song, mockSongs, MoodPoint, moodPoints, MoodType } from "@/data/songs";
+import { Song, mockSongs, MoodPoint, moodPoints, MoodType, Language } from "@/data/songs";
 
 export interface UserPreferences {
   preferredGenres: string[];
   favoriteArtists: string[];
+  preferredLanguages: Language[];
   likedSongIds: string[];
 }
 
@@ -10,6 +11,7 @@ export interface PlaylistSong extends Song {
   moodScore: number;
   genreMatch: boolean;
   artistMatch: boolean;
+  languageMatch: boolean;
   explanation: string;
   targetValence: number;
   targetArousal: number;
@@ -97,10 +99,10 @@ function scoreSong(
   targetArousal: number,
   preferences: UserPreferences,
   usedSongIds: Set<string>
-): { score: number; genreMatch: boolean; artistMatch: boolean } {
+): { score: number; genreMatch: boolean; artistMatch: boolean; languageMatch: boolean } {
   // Already used penalty
   if (usedSongIds.has(song.id)) {
-    return { score: -Infinity, genreMatch: false, artistMatch: false };
+    return { score: -Infinity, genreMatch: false, artistMatch: false, languageMatch: false };
   }
 
   // Mood distance (primary factor) - lower is better
@@ -118,16 +120,21 @@ function scoreSong(
 
   // Artist match bonus
   const artistMatch = preferences.favoriteArtists.includes(song.artist);
-  const artistScore = artistMatch ? 0.2 : 0;
+  const artistScore = artistMatch ? 0.15 : 0;
+
+  // Language match bonus (high priority)
+  const languageMatch = preferences.preferredLanguages.length === 0 || 
+    preferences.preferredLanguages.includes(song.language);
+  const languageScore = languageMatch ? 0.2 : -0.3; // Penalty for non-preferred language
 
   // Liked song bonus
   const likedScore = preferences.likedSongIds.includes(song.id) ? 0.1 : 0;
 
   // Weighted combination
   const totalScore =
-    moodScore * 0.6 + genreScore * 0.2 + artistScore * 0.15 + likedScore * 0.05;
+    moodScore * 0.5 + genreScore * 0.15 + artistScore * 0.1 + languageScore * 0.2 + likedScore * 0.05;
 
-  return { score: totalScore, genreMatch, artistMatch };
+  return { score: totalScore, genreMatch, artistMatch, languageMatch };
 }
 
 // Generate explanation for why a song was chosen
@@ -199,9 +206,10 @@ export function generateMoodPlaylist(
     let bestScore = -Infinity;
     let bestGenreMatch = false;
     let bestArtistMatch = false;
+    let bestLanguageMatch = false;
 
     mockSongs.forEach((song) => {
-      const { score, genreMatch, artistMatch } = scoreSong(
+      const { score, genreMatch, artistMatch, languageMatch } = scoreSong(
         song,
         target.valence,
         target.arousal,
@@ -214,6 +222,7 @@ export function generateMoodPlaylist(
         bestSong = song;
         bestGenreMatch = genreMatch;
         bestArtistMatch = artistMatch;
+        bestLanguageMatch = languageMatch;
       }
     });
 
@@ -235,6 +244,7 @@ export function generateMoodPlaylist(
         moodScore: bestScore,
         genreMatch: bestGenreMatch,
         artistMatch: bestArtistMatch,
+        languageMatch: bestLanguageMatch,
         explanation,
         targetValence: target.valence,
         targetArousal: target.arousal,
@@ -312,8 +322,9 @@ function calculateMetrics(
 // Get default preferences
 export function getDefaultPreferences(): UserPreferences {
   return {
-    preferredGenres: ["Indie", "Pop", "Electronic"],
-    favoriteArtists: ["Tame Impala", "Glass Animals", "Daft Punk"],
-    likedSongIds: ["11", "12", "17", "23"],
+    preferredGenres: ["pop", "rock", "hiphop"],
+    favoriteArtists: ["Arijit Singh", "A.R. Rahman", "BTS"],
+    preferredLanguages: ["english", "hindi"],
+    likedSongIds: ["41", "42", "82", "29"],
   };
 }

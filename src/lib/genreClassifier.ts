@@ -241,3 +241,81 @@ export function getGenreEmoji(genre: GTZANGenre): string {
   };
   return emojis[genre];
 }
+
+/**
+ * Valence-Arousal mapping for each genre
+ * Valence: How positive/negative (0 = negative, 1 = positive)
+ * Arousal: How energizing/calming (0 = calm, 1 = exciting)
+ */
+export interface ValenceArousal {
+  valence: number;
+  arousal: number;
+  mood: string;
+  description: string;
+}
+
+export function getGenreValenceArousal(genre: GTZANGenre): ValenceArousal {
+  const mapping: Record<GTZANGenre, ValenceArousal> = {
+    blues: { 
+      valence: 0.30, 
+      arousal: 0.40, 
+      mood: 'Melancholic',
+      description: 'Reflective and emotionally expressive'
+    },
+    classical: { 
+      valence: 0.50, 
+      arousal: 0.35, 
+      mood: 'Sophisticated',
+      description: 'Elegant and emotionally nuanced'
+    },
+    country: { 
+      valence: 0.55, 
+      arousal: 0.45, 
+      mood: 'Nostalgic',
+      description: 'Storytelling with emotional depth'
+    },
+    disco: { 
+      valence: 0.85, 
+      arousal: 0.85, 
+      mood: 'Euphoric',
+      description: 'High energy dance vibes'
+    },
+    hiphop: { 
+      valence: 0.60, 
+      arousal: 0.75, 
+      mood: 'Confident',
+      description: 'Rhythmic and assertive energy'
+    },
+    jazz: { 
+      valence: 0.55, 
+      arousal: 0.40, 
+      mood: 'Relaxed',
+      description: 'Smooth and contemplative'
+    },
+    metal: { 
+      valence: 0.35, 
+      arousal: 0.95, 
+      mood: 'Intense',
+      description: 'Aggressive and powerful'
+    },
+    pop: { 
+      valence: 0.80, 
+      arousal: 0.70, 
+      mood: 'Upbeat',
+      description: 'Catchy and feel-good'
+    },
+    reggae: { 
+      valence: 0.75, 
+      arousal: 0.45, 
+      mood: 'Laid-back',
+      description: 'Positive and relaxing vibes'
+    },
+    rock: { 
+      valence: 0.55, 
+      arousal: 0.80, 
+      mood: 'Energetic',
+      description: 'Driving and rebellious spirit'
+    }
+  };
+  return mapping[genre];
+}

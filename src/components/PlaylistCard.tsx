@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { PlaylistSong } from "@/lib/moodEngine";
-import { Music, Clock, Zap, Heart, User, Disc } from "lucide-react";
+import { LANGUAGE_LABELS } from "@/data/songs";
+import { Music, Clock, Zap, Heart, User, Disc, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -81,6 +82,10 @@ export function PlaylistCard({ song, index, isFirst, isLast }: PlaylistCardProps
             <Badge variant="secondary" className="text-xs">
               <Music className="w-3 h-3 mr-1" />
               {song.genre}
+            </Badge>
+            <Badge variant="secondary" className="text-xs">
+              <Globe className="w-3 h-3 mr-1" />
+              {LANGUAGE_LABELS[song.language]?.flag} {LANGUAGE_LABELS[song.language]?.name || song.language}
             </Badge>
             <Badge variant="secondary" className="text-xs">
               <Zap className="w-3 h-3 mr-1" />

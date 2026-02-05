@@ -7,6 +7,7 @@ import {
   formatConfidence,
   getGenreColor,
   getGenreEmoji,
+  getGenreValenceArousal,
 } from "@/lib/genreClassifier";
 import { GTZAN_GENRES, GTZANGenre } from "@/data/songs";
 import { Button } from "@/components/ui/button";
@@ -309,31 +310,86 @@ const Classifier = () => {
                     style={{ backgroundColor: getGenreColor(result.topGenre) }}
                   />
                   <CardContent className="pt-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div 
-                          className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl"
-                          style={{ backgroundColor: `${getGenreColor(result.topGenre)}20` }}
-                        >
-                          {getGenreEmoji(result.topGenre)}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-green-500" />
-                            <span className="text-sm text-muted-foreground">Classification Complete</span>
+                    <div className="flex flex-col gap-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div 
+                            className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl"
+                            style={{ backgroundColor: `${getGenreColor(result.topGenre)}20` }}
+                          >
+                            {getGenreEmoji(result.topGenre)}
                           </div>
-                          <h3 className="text-3xl font-bold capitalize mt-1">
-                            {result.topGenre}
-                          </h3>
-                          <p className="text-lg text-muted-foreground">
-                            {formatConfidence(result.topConfidence)} confidence
-                          </p>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-5 h-5 text-green-500" />
+                              <span className="text-sm text-muted-foreground">Classification Complete</span>
+                            </div>
+                            <h3 className="text-3xl font-bold capitalize mt-1">
+                              {result.topGenre}
+                            </h3>
+                            <p className="text-lg text-muted-foreground">
+                              {formatConfidence(result.topConfidence)} confidence
+                            </p>
+                          </div>
                         </div>
+                        <Button onClick={resetClassifier} variant="outline" className="gap-2">
+                          <Sparkles className="w-4 h-4" />
+                          Classify Another
+                        </Button>
                       </div>
-                      <Button onClick={resetClassifier} variant="outline" className="gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        Classify Another
-                      </Button>
+                      
+                      {/* Valence-Arousal Display */}
+                      {(() => {
+                        const va = getGenreValenceArousal(result.topGenre);
+                        return (
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t">
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium text-muted-foreground">Valence</span>
+                                <span className="text-sm font-bold">{(va.valence * 100).toFixed(0)}%</span>
+                              </div>
+                              <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${va.valence * 100}%` }}
+                                  transition={{ duration: 0.8, ease: "easeOut" }}
+                                  className="h-full rounded-full bg-gradient-to-r from-blue-500 to-green-500"
+                                />
+                              </div>
+                              <span className="text-xs text-muted-foreground">
+                                {va.valence < 0.4 ? '😢 Negative' : va.valence < 0.6 ? '😐 Neutral' : '😊 Positive'}
+                              </span>
+                            </div>
+                            
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium text-muted-foreground">Arousal</span>
+                                <span className="text-sm font-bold">{(va.arousal * 100).toFixed(0)}%</span>
+                              </div>
+                              <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${va.arousal * 100}%` }}
+                                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+                                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-red-500"
+                                />
+                              </div>
+                              <span className="text-xs text-muted-foreground">
+                                {va.arousal < 0.4 ? '😌 Calm' : va.arousal < 0.7 ? '⚡ Moderate' : '🔥 High Energy'}
+                              </span>
+                            </div>
+                            
+                            <div className="flex flex-col justify-center items-center p-3 rounded-lg bg-secondary/50">
+                              <span className="text-lg font-bold" style={{ color: getGenreColor(result.topGenre) }}>
+                                {va.mood}
+                              </span>
+                              <span className="text-xs text-center text-muted-foreground mt-1">
+                                {va.description}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </CardContent>
                 </Card>
